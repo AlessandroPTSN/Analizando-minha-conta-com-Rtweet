@@ -1,5 +1,5 @@
 # Analizando-minha-conta-com-Rtweet
-Fazendo uma análise descritiva dos meus twittes mais recentes usando o "userTimeline" do Rtweet
+Fazendo uma análise descritiva dos meus twittes mais recentes usando o "get_timeline" do Rtweet
 
 ```R
 library(rtweet)
