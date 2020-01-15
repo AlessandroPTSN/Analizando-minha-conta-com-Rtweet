@@ -1,19 +1,23 @@
-# Analizando-minha-conta-com-twitteR
-Fazendo uma análise descritiva dos meus twittes mais recentes usando o "userTimeline" do twitteR
+# Analizando-minha-conta-com-Rtweet
+Fazendo uma análise descritiva dos meus twittes mais recentes usando o "userTimeline" do Rtweet
 
 ```R
-library(twitteR)
-library(XML)
-library(twitteR) 
-# Mude consumer_key, consume_secret, access_token, e
-# access_secret baseado nas suas propias chaves
-setup_twitter_oauth(consumer_key, consumer_secret, access_token, access_secret)
+library(rtweet)
 
-#obentdo meus dados
-cran_tweets <- userTimeline('Alessandroptsn')
-cran_tweets <- twListToDF(cran_tweets)
-cran_tweets
+# Mude consumer_key, consume_secret, access_token, e 
+# access_secret baseado nas suas propias chaves
+token <- create_token(
+  app = "Hi",
+  consumer_key = consumer_key,
+  consumer_secret = consumer_secret,
+  access_token = access_token,
+  access_secret = access_secret)
+  
+h=get_timeline("Alessandroptsn",n=500)
+
+names(h)
 ```
+![Rtwitter0](https://user-images.githubusercontent.com/50224653/72466816-67034880-37b8-11ea-9496-5ecd54e26399.png)
 
 ## Gráfico de pizza
 ```R
@@ -22,34 +26,35 @@ ggplot( source_table_2, aes(x = "", y = size, fill = Fonte)) +
   ggtitle("          Por onde eu mais faço tweets")+
   coord_polar("y", start = 0)+
   geom_text(aes(y = position, label = percent), color = "Black")+
-  scale_fill_manual(values = c("#1F65CC","#3686D3")) +
+  scale_fill_brewer(palette = "Blues") +
+  #scale_fill_manual(values = c("#1F65CC","#3686D3")) +
   theme_void()
 ```
-![Alessandro_Twitter1](https://user-images.githubusercontent.com/50224653/72296271-fdf4c700-3637-11ea-8186-434268235d51.png)
+![Rtwitter1](https://user-images.githubusercontent.com/50224653/72466817-67034880-37b8-11ea-99a5-6c3c58949455.png)
 
 ## Gráfico de linha
 ```R
-ggplot(cran_tweets, aes(x = created, y = favoriteCount))+geom_line(size = 2,colour = "red")+
+ggplot(h, aes(x = created_at, y = favorite_count))+geom_line(size = 2,colour = "red")+
   xlab("Tempo")+
   ylab("Quantidade de Likes")+
-  ggtitle("Quantidade de Likes a medida do tempo, em média 3 Likes")
+  ggtitle("Quantidade de Likes a medida do tempo, em média 2.26 Likes")
 ```
-![Alessandro_Twitter2](https://user-images.githubusercontent.com/50224653/72296272-fdf4c700-3637-11ea-85d8-d035fa2a8943.png)
+![Rtwitter2](https://user-images.githubusercontent.com/50224653/72466813-666ab200-37b8-11ea-96b4-bacb3f6165b8.png)
 
 ## Gráfico de palavras
 ```R
 wordcloud2(palavras, size = 0.7, color = "#1F65CC",backgroundColor = "grey")
 #obs: recomendo dar uma olhada no código, isso foi o mais trabalhoso de ser feito
 ```
-![Alessandro_Twitter3](https://user-images.githubusercontent.com/50224653/72296269-fdf4c700-3637-11ea-829b-45a75263fc69.png)
+![Rtwitter3](https://user-images.githubusercontent.com/50224653/72466812-666ab200-37b8-11ea-924f-4a55e8089b2a.png)
 
 ## Gráfico de barras
 ```R
-ggplot(data=trunctable2, aes(x=name,y=percent,fill=factor(size))) +
+ggplot(data=retweet, aes(x=Fonte,y=percent,fill=factor(size))) +
   geom_bar(position="dodge",stat="identity")+
   scale_fill_manual(values = c("dodgerblue4","red3"))+
   xlab("")+
   ylab("Porcentagem")+
-  ggtitle("Twittes truncados (Respostas em Twittes)")
+  ggtitle("Meus Retwittes")
 ```
-![Alessandro_Twitter4](https://user-images.githubusercontent.com/50224653/72296270-fdf4c700-3637-11ea-9978-1a86a6113517.png)
+![Rtwitter4](https://user-images.githubusercontent.com/50224653/72466814-67034880-37b8-11ea-8d7d-aa4fa3ea8128.png)
