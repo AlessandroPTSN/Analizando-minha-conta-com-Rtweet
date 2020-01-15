@@ -1,15 +1,5 @@
 library(rtweet)
 
-
-consumer_key <- "cFKMot7ND5fHtWwNQjLuRLCGl"
-consumer_secret <-"CnRf6RSJZv3NBc8M7VXfYxA6sqKlP4R2gMRrfzN0vNhPfihoVv"
-access_token <- "2391937980-4CfhyeEfDmid7lU7JpahmdgToGkue5s0Sz5wFv1"
-access_secret <- "5adKRIO38lvnhIh4vl50KuhFcY9WnMLHoEJxtWSJOH0Qh" 
-setup_twitter_oauth(consumer_key, consumer_secret, access_token, access_secret)
-
-
-library(rtweet)
-
 # Mude consumer_key, consume_secret, access_token, e 
 # access_secret baseado nas suas propias chaves
 token <- create_token(
@@ -27,7 +17,7 @@ names(h)
 
 
 ####################################################################################################################
-#criando o gr·fico de pizza
+#criando o gr√°fico de pizza
 
 source_table=h$source[h$source!="SumAll"]
 source_table=source_table[source_table!="Twitter Web Client" ]
@@ -55,16 +45,16 @@ source_table_2
 
 library(ggplot2)
 
-#adicionando a posiÁ„o da %
+#adicionando a posi√ß√£o da %
 source_table_2 <-  source_table_2%>%
   arrange(desc(Fonte)) %>%
   mutate(position = cumsum(size) - 0.5*size)
 source_table_2
 
-#gr·fico de pizza
+#gr√°fico de pizza
 ggplot( source_table_2, aes(x = "", y = size, fill = Fonte)) +
   geom_bar(width = 1, stat = "identity", color = "white") +
-  ggtitle("          Por onde eu mais faÁo tweets")+
+  ggtitle("          Por onde eu mais fa√ßo tweets")+
   coord_polar("y", start = 0)+
   geom_text(aes(y = position, label = percent), color = "Black")+
   scale_fill_brewer(palette = "Blues") +
@@ -73,7 +63,7 @@ ggplot( source_table_2, aes(x = "", y = size, fill = Fonte)) +
 
 
 ####################################################################################################################
-#criando o gr·fico de linha
+#criando o gr√°fico de linha
 
 library(chron)
 library(stringr)
@@ -85,13 +75,13 @@ h$created_at=as.Date(h$created_at)
 ggplot(h, aes(x = created_at, y = favorite_count))+geom_line(size = 2,colour = "red")+
   xlab("Tempo")+
   ylab("Quantidade de Likes")+
-  ggtitle("Quantidade de Likes a medida do tempo, em mÈdia 2.26 Likes")
+  ggtitle("Quantidade de Likes a medida do tempo, em m√©dia 2.26 Likes")
 
 
 mean(h$favorite_count)
 
 ####################################################################################################################
-#gr·fico de palavras
+#gr√°fico de palavras
 
 library(readtext)
 library(tm)
@@ -128,7 +118,7 @@ NormalizaParaTextMining <- function(texto){
   # Normaliza texto
   texto %>% 
     chartr(
-      old = "(),¥`^~®:.!?&$@#0123456789",
+      old = "(),¬¥`^~¬®:.!?&$@#0123456789",
       new = "                          ",
       x = .) %>% # Elimina acentos e caracteres desnecessarios
     str_squish() %>% # Elimina espacos excedentes 
@@ -162,7 +152,7 @@ wordcloud2(palavras, size = 0.7, color = "#1F65CC",backgroundColor = "grey")
 
 
 ####################################################################################################################
-#Gr·fico de barras mostrando os Retweets
+#Gr√°fico de barras mostrando os Retweets
 
 isretweet=table(h$is_retweet)
 
@@ -183,7 +173,7 @@ retweet$percent =  round((retweet$size)/sum(retweet$size),2)
 #mostrando a tabela
 retweet
 
-#fazendo o Gr·fico
+#fazendo o Gr√°fico
 ggplot(data=retweet, aes(x=Fonte,y=percent,fill=factor(size))) +
   geom_bar(position="dodge",stat="identity")+
   scale_fill_manual(values = c("dodgerblue4","red3"))+
